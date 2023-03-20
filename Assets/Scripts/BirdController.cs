@@ -12,7 +12,7 @@ public class BirdController : MonoBehaviour
     public int branchId;// {get;set;}
     public bool isOddBranch = false;// {get;set;}
     private float branchYpos;
-    private float[] branchXpos = {1f, 2.5f, 4, 5.5f};
+    private float[] branchXpos = {-2f, -0.5f, 1, 2.5f};
 
     [SerializeField] public Stack<Bird> birdsOnBranch;// = new Stack<Bird>();
     [SerializeField] Button branchButton;
@@ -54,11 +54,11 @@ public class BirdController : MonoBehaviour
     public void AddBirds(List<Bird> selectedBirds){
         foreach (Bird bird in selectedBirds){
             bird.transform.SetParent(transform);
-            bird.StartCoroutine(bird.FlipTheBird(isOddBranch));
         }
     }
     public void MoveBirds(Bird bird, float x, float y){
         bird.SetMovingDirection(x, y);
+        bird.StartCoroutine(bird.FlipTheBird(isOddBranch, bird.birdSpeed));
     }
     public int EmptySpacesOnBranch(){
         return maxNumberOfBirds - birdsOnBranch.Count;

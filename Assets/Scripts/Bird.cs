@@ -7,17 +7,18 @@ public class Bird : MonoBehaviour
 {
     public BirdType birdType;
     private Outline outline;
-    [SerializeField] private Vector3 birdPos;
+    // [SerializeField] private Vector3 birdPos;
     [SerializeField] Animator animator;
     [SerializeField] private bool isSelected = false;
     [SerializeField] public Transform selectIndicator, flyAwayPoint;
-    private float birdSpeed = 1f;
+    [SerializeField] private AudioSource flyAwaySound;
+    public float birdSpeed = 1f;
     private Vector3 direction;
 
     // Start is called before the first frame update
     void Start()
     {
-        birdPos = transform.localPosition;
+        // birdPos = transform.localPosition;
         selectIndicator.GetComponent<SpriteRenderer>().enabled = isSelected;
     }
 
@@ -44,14 +45,15 @@ public class Bird : MonoBehaviour
     public Vector3 GetMovingDirection(){
         return direction;
     }
-    public IEnumerator FlipTheBird(bool value){
-        yield return new WaitForSeconds(birdSpeed);
+    public IEnumerator FlipTheBird(bool value, float speed){
+        yield return new WaitForSeconds(speed);
         GetComponent<SpriteRenderer>().flipX = value;
     }
     public IEnumerator FlyAway(){
         yield return new WaitForSeconds(birdSpeed);
         GetComponent<SpriteRenderer>().flipX = true;
         transform.DOMove(flyAwayPoint.position, birdSpeed * 3f);
+        flyAwaySound.Play();
     }
 }
 
