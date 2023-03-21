@@ -31,7 +31,7 @@ public class Bird : MonoBehaviour
         Vector3 newDirection = new Vector3(x, y, 0);
         transform.localPosition = newDirection;
         GetComponent<SpriteRenderer>().flipX = value;
-        // SetMovingDirection(newDirection);
+        if (!value) transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
     }
     public void SelectBird(bool value){
         isSelected = value;
@@ -48,6 +48,7 @@ public class Bird : MonoBehaviour
     public IEnumerator FlipTheBird(bool value, float speed){
         yield return new WaitForSeconds(speed);
         GetComponent<SpriteRenderer>().flipX = value;
+        // if (!value) transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
     }
     public IEnumerator FlyAway(){
         yield return new WaitForSeconds(birdSpeed);

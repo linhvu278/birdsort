@@ -11,9 +11,8 @@ public class BirdManager : MonoBehaviour
     private WinScreenManager winScreenManager;
 
     public List<GameObject> branches = new List<GameObject>();
-    private List<BirdController> birdControllers = new List<BirdController>();
-    private BirdController selectedBc;
-    [SerializeField] private GameObject selectedBranch, targetBranch;
+    public List<BirdController> birdControllers = new List<BirdController>();
+    [SerializeField] private BirdController selectedBranch, targetBranch;
     [SerializeField] public List<Bird> selectedBirds = new List<Bird>();
     [SerializeField] private List<Bird> allBirds = new List<Bird>();
 
@@ -26,45 +25,45 @@ public class BirdManager : MonoBehaviour
     {
         winScreenManager = WinScreenManager.instance;
 
-        // foreach (GameObject branch in GameObject.FindGameObjectsWithTag("Branch").ToList()){
-        foreach(GameObject branch in branches){
-            birdControllers.Add(branch.GetComponent<BirdController>());
+        // branches = GameObject.FindGameObjectsWithTag("Branch").ToList();
+
+        // if (branches.Count > 0){
+        //     for (int a = 0; a < branches.Count; a++){
+        //         birdControllers.Add(branches[a].GetComponent<BirdController>());
+        //         Debug.Log("i love penis");
+        //     }
+        // }
+    }
+
+    public void GetBirdControllers(){
+        foreach (GameObject branch in branches){
+            birdControllers.Add(branch.transform.GetComponent<BirdController>());
         }
         foreach (BirdController bc in birdControllers){
             bc.branchId = birdControllers.IndexOf(bc);
             if (bc.branchId % 2 == 0) bc.isOddBranch = true;
+            bc.GetBirdsOnBranch();
             allBirds.AddRange(bc.birdsOnBranch);
         }
-
-        // branches.AddRange(GameObject.FindGameObjectsWithTag("Branch"));
-        // for (int i = 0; i < branches.Count; i++){
-        //     BirdController bc = branches[i].GetComponent<BirdController>();
-        //     birdControllers.Add(bc);
-        // }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void SelectBranch(GameObject newBranch){
-        if (selectedBranch != newBranch){
-            if (selectedBranch != null && newBranch.GetComponent<BirdController>().EmptySpacesOnBranch() >= selectedBirds.Count){
-                targetBranch = branches.Find(x => x == newBranch);
-                MoveToTargetBranch(targetBranch);
+    public void SelectBranch(BirdController bc){
+        if (selectedBranch != bc){
+            if (selectedBranch != null && bc.EmptySpacesOnBranch() >= selectedBirds.Count){
+                targetBranch = birdControllers.Find(x => x.branchId == bc.branchId);
+                // targetBranch = bc;
+                MoveToTargetBranch();
             } else {
-                if (newBranch.GetComponent<BirdController>().GetBirdsAmount() > 0){
+                if (bc.birdsOnBranch.Count > 0){
                     UnselectBranch();
-                    selectedBranch = branches.Find(x => x == newBranch);
-                    AddSelectedBirds(birdControllers[branches.IndexOf(selectedBranch)]);
+                    selectedBranch = birdControllers.Find(x => x.branchId == bc.branchId);
+                    // selectedBranch = bc;
+                    AddSelectedBirds(selectedBranch);
                 }
             }
         }
         else return;
     }
-    public void AddSelectedBirds(BirdController bc){
+    void AddSelectedBirds(BirdController bc){
         if (selectedBirds != null) selectedBirds.Clear();
         if (bc.GetBirdsAmount() > 0){
             for (int i = 0; i < bc.GetBirdsAmount(); i++){
@@ -75,19 +74,18 @@ public class BirdManager : MonoBehaviour
             }
         }
     }
-    public void MoveToTargetBranch(GameObject newBranch){
+    void MoveToTargetBranch(){
         if (selectedBirds != null){
-            targetBranch = branches.Find(x => x == newBranch);
-            if (birdControllers[branches.IndexOf(targetBranch)].GetBirdsAmount() == 0 || birdControllers[branches.IndexOf(targetBranch)].GetBirdsAmount() > 0 && birdControllers[branches.IndexOf(targetBranch)].birdsOnBranch.Peek().birdType == selectedBirds[0].birdType){
+            if (targetBranch.GetBirdsAmount() == 0 || targetBranch.GetBirdsAmount() > 0 && targetBranch.birdsOnBranch.Peek().birdType == selectedBirds[0].birdType){
                 int i = selectedBirds.Count;
                 while (i > 0){
-                    birdControllers[branches.IndexOf(selectedBranch)].birdsOnBranch.Pop();
-                    birdControllers[branches.IndexOf(targetBranch)].birdsOnBranch.Push(selectedBirds[i-1]);
-                    birdControllers[branches.IndexOf(targetBranch)].MoveBirds(birdControllers[branches.IndexOf(targetBranch)].birdsOnBranch.Peek(), birdControllers[branches.IndexOf(targetBranch)].GetBranchXPos(birdControllers[branches.IndexOf(targetBranch)].birdsOnBranch.Count-1), 0.75f);
+                    selectedBranch.birdsOnBranch.Pop();
+                    targetBranch.birdsOnBranch.Push(selectedBirds[i-1]);
+                    targetBranch.MoveBirds(targetBranch.birdsOnBranch.Peek(), targetBranch.GetBranchXPos(targetBranch.birdsOnBranch.Count-1), targetBranch.GetBranchYPos(targetBranch.birdsOnBranch.Count-1));
                     i--;
                 }
-                birdControllers[branches.IndexOf(targetBranch)].AddBirds(selectedBirds);
-                CheckBranch(birdControllers[branches.IndexOf(targetBranch)]);
+                targetBranch.AddBirds(selectedBirds);
+                CheckBranch(targetBranch);
             }
             UnselectBranch();
         }

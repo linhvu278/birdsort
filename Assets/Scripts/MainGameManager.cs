@@ -17,13 +17,16 @@ public class MainGameManager : MonoBehaviour
 
     void BackToMainMenu(){
         Debug.Log("back to main menu");
+        // destroy list of birds to spawn
     }
     void ReplayLevel(){
         // Debug.Log("replay level");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // dont destroy on load list of birds to spawn
     }
     public void NextLevel(){
         Debug.Log("next level");
+        // clear list of birds to spawn
     }
     public void EnableReplayButton(bool value){
         replayButton.enabled = value;

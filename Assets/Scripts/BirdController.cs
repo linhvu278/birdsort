@@ -6,50 +6,42 @@ using UnityEngine.UI;
 
 public class BirdController : MonoBehaviour
 {
-    BirdManager birdManager;
+    private BirdManager birdManager;
+    private BirdsToSpawn birdSpawner;
 
-    public const int maxNumberOfBirds = 4;
+    private int maxNumberOfBirds;// = 4;
     public int branchId;// {get;set;}
     public bool isOddBranch = false;// {get;set;}
-    private float branchYpos;
-    private float[] branchXpos = {-2f, -0.5f, 1, 2.5f};
+    // private float branchYpos;
+    private float[] branchXpos = {-1.8f, -0.6f, 0.6f, 1.8f};
+    private float[] branchYpos = {0.75f, 0.6f, 0.5f, 0.45f};
 
-    [SerializeField] public Stack<Bird> birdsOnBranch;// = new Stack<Bird>();
-    [SerializeField] Button branchButton;
+    [SerializeField] public Stack<Bird> birdsOnBranch = new Stack<Bird>();
+    public Button branchButton;
 
     // Start is called before the first frame update
     void Awake(){
-        birdsOnBranch = new Stack<Bird>(transform.GetComponentsInChildren<Bird>());
 
     }
     void Start()
     {
         birdManager = BirdManager.instance;
+        birdSpawner = BirdsToSpawn.instance;
 
-        branchYpos = transform.position.y;
+        maxNumberOfBirds = birdSpawner.MaxNumberOfBirdsOnBranch();
 
-        // foreach (Bird bird in transform.GetComponentsInChildren<Bird>()){
-        //     birdsOnBranch.Push(bird);
-        // }
-        for (int i = 0; i < birdsOnBranch.Count; i++){
-            // MoveBirds(birdsOnBranch.ElementAt(birdsOnBranch.Count-1-i), branchXpos[i], 0.75f);
-            birdsOnBranch.ElementAt(birdsOnBranch.Count-1-i).SetBirdPos(branchXpos[i], 0.75f, isOddBranch);
-            // birdsOnBranch.ElementAt(birdsOnBranch.Count-1-i).FlipTheBird(isOddBranch);
-        }
+        // branchYpos = transform.position.y;
 
         branchButton.onClick.AddListener(OnTouch);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        // if (Input.touchCount > 0){
-        //     Touch touch = Input.GetTouch(0);
-        //     if (touch.phase == TouchPhase.Began) Debug.Log("test");
-        // }
+    public void GetBirdsOnBranch(){
+        birdsOnBranch = new Stack<Bird>(transform.GetComponentsInChildren<Bird>());
+        for (int i = 0; i < birdsOnBranch.Count; i++){
+            birdsOnBranch.ElementAt(birdsOnBranch.Count-1-i).SetBirdPos(branchXpos[i], branchYpos[i], isOddBranch);
+        }
     }
     public void OnTouch(){
-        birdManager.SelectBranch(gameObject);
+        birdManager.SelectBranch(GetComponent<BirdController>());
     }
     public void AddBirds(List<Bird> selectedBirds){
         foreach (Bird bird in selectedBirds){
@@ -68,5 +60,8 @@ public class BirdController : MonoBehaviour
     }
     public float GetBranchXPos(int index){
         return branchXpos[index];
+    }
+    public float GetBranchYPos(int index){
+        return branchYpos[index];
     }
 }
