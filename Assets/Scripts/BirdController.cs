@@ -48,6 +48,10 @@ public class BirdController : MonoBehaviour
             bird.transform.SetParent(transform);
         }
     }
+    public void AddBird(Bird bird){
+        bird.transform.SetParent(transform);
+        birdsOnBranch.Push(bird);
+    }
     public void MoveBirds(Bird bird, float x, float y){
         bird.SetMovingDirection(x, y);
         bird.StartCoroutine(bird.FlipTheBird(isOddBranch, bird.birdSpeed));

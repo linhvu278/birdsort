@@ -48,24 +48,26 @@ public class BirdManager : MonoBehaviour
     }
     public void SelectBranch(BirdController bc){
         if (selectedBranch != bc){
-            if (selectedBranch != null && bc.EmptySpacesOnBranch() >= selectedBirds.Count){
-                targetBranch = birdControllers.Find(x => x.branchId == bc.branchId);
-                // targetBranch = bc;
+            if (selectedBirds.Count > 0 && bc.EmptySpacesOnBranch() > 0){
+                // targetBranch = birdControllers.Find(x => x.branchId == bc.branchId);
+                targetBranch = bc;
                 MoveToTargetBranch();
             } else {
-                if (bc.birdsOnBranch.Count > 0){
-                    UnselectBranch();
-                    selectedBranch = birdControllers.Find(x => x.branchId == bc.branchId);
+                if (bc.GetBirdsAmount() > 0){
+                    // UnselectBranch();
+                    // selectedBranch = birdControllers.Find(x => x.branchId == bc.branchId);
                     // selectedBranch = bc;
-                    AddSelectedBirds(selectedBranch);
+                    AddSelectedBirds(bc);
                 }
             }
         }
-        else return;
+        else UnselectBranch();
     }
     void AddSelectedBirds(BirdController bc){
-        if (selectedBirds != null) selectedBirds.Clear();
+        // if (selectedBirds != null) selectedBirds.Clear();
+        UnselectBranch();
         if (bc.GetBirdsAmount() > 0){
+            selectedBranch = bc;
             for (int i = 0; i < bc.GetBirdsAmount(); i++){
                 if (bc.birdsOnBranch.ElementAt(i).birdType == bc.birdsOnBranch.Peek().birdType){
                     selectedBirds.Add(bc.birdsOnBranch.ElementAt(i));
@@ -75,19 +77,57 @@ public class BirdManager : MonoBehaviour
         }
     }
     void MoveToTargetBranch(){
-        if (selectedBirds != null){
-            if (targetBranch.GetBirdsAmount() == 0 || targetBranch.GetBirdsAmount() > 0 && targetBranch.birdsOnBranch.Peek().birdType == selectedBirds[0].birdType){
-                int i = selectedBirds.Count;
-                while (i > 0){
-                    selectedBranch.birdsOnBranch.Pop();
-                    targetBranch.birdsOnBranch.Push(selectedBirds[i-1]);
-                    targetBranch.MoveBirds(targetBranch.birdsOnBranch.Peek(), targetBranch.GetBranchXPos(targetBranch.birdsOnBranch.Count-1), targetBranch.GetBranchYPos(targetBranch.birdsOnBranch.Count-1));
-                    i--;
-                }
-                targetBranch.AddBirds(selectedBirds);
-                CheckBranch(targetBranch);
+        int i = selectedBirds.Count;
+        int k = targetBranch.EmptySpacesOnBranch();
+        
+        if (targetBranch.GetBirdsAmount() == 0){
+            while (i > 0){
+                selectedBranch.birdsOnBranch.Pop();
+                targetBranch.AddBird(selectedBirds[i-1]);
+                // targetBranch.birdsOnBranch.Push(selectedBirds[i-1]);
+                targetBranch.MoveBirds(targetBranch.birdsOnBranch.Peek(),
+                                       targetBranch.GetBranchXPos(targetBranch.GetBirdsAmount() - 1),
+                                       targetBranch.GetBranchYPos(targetBranch.GetBirdsAmount() - 1));
+                i--;
             }
+            // targetBranch.AddBirds(selectedBirds);
             UnselectBranch();
+            CheckBranch(targetBranch);
+        } else {
+            if (targetBranch.birdsOnBranch.Peek().birdType == selectedBirds[0].birdType){
+                if (i <= k){
+                    while (i > 0){
+                        selectedBranch.birdsOnBranch.Pop();
+                        targetBranch.AddBird(selectedBirds[i-1]);
+                        // targetBranch.birdsOnBranch.Push(selectedBirds[i-1]);
+                        targetBranch.MoveBirds(targetBranch.birdsOnBranch.Peek(),
+                                            targetBranch.GetBranchXPos(targetBranch.GetBirdsAmount() - 1),
+                                            targetBranch.GetBranchYPos(targetBranch.GetBirdsAmount() - 1));
+                        i--;
+                    }
+                    // targetBranch.AddBirds(selectedBirds);
+                    UnselectBranch();
+                    CheckBranch(targetBranch);
+                } else {
+                    int j = 0;
+                    while (k > 0 && j < i){
+                        targetBranch.AddBird(selectedBirds[j]);
+                        // targetBranch.birdsOnBranch.Push(selectedBirds[i-1]);
+                        targetBranch.MoveBirds(targetBranch.birdsOnBranch.Peek(),
+                                            targetBranch.GetBranchXPos(targetBranch.GetBirdsAmount() - 1),
+                                            targetBranch.GetBranchYPos(targetBranch.GetBirdsAmount() - 1));
+                        selectedBranch.birdsOnBranch.Pop();
+                        // selectedBirds[j].SelectBird(false);
+                        // selectedBirds.Remove(selectedBirds[j]);
+                        j++;
+                        k--;
+                        // i--;
+                    }
+                    UnselectBranch();
+                    CheckBranch(targetBranch);
+                }
+                
+            } else AddSelectedBirds(targetBranch);
         }
     }
     void CheckBranch(BirdController bc){
@@ -101,10 +141,10 @@ public class BirdManager : MonoBehaviour
         if (allBirds.Count == 0) winScreenManager.EnableWinScreen(true);
     }
     void UnselectBranch(){
-        selectedBranch = null;
         if (selectedBirds.Count > 0){
             foreach (Bird bird in selectedBirds) bird.SelectBird(false);
             selectedBirds.Clear();
+            selectedBranch = null;
         }
     }
 }

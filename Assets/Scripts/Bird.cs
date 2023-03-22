@@ -21,12 +21,6 @@ public class Bird : MonoBehaviour
         // birdPos = transform.localPosition;
         selectIndicator.GetComponent<SpriteRenderer>().enabled = isSelected;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void SetBirdPos(float x, float y, bool value){
         Vector3 newDirection = new Vector3(x, y, 0);
         transform.localPosition = newDirection;

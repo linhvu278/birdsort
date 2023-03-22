@@ -17,10 +17,17 @@ public class BranchSpawner : MonoBehaviour
     [SerializeField] private Transform branchGroup;
     private List<Transform> branchPositions = new List<Transform>();
     private Stack<GameObject> branchesToSpawn = new Stack<GameObject>();
-    [SerializeField] private List<Button> branchButtons = new List<Button>();
-    [SerializeField] private List<GameObject> birdsToSpawn = new List<GameObject>();
+    [SerializeField] public Transform buttonGroup;
+    private List<Button> branchButtons = new List<Button>();
+    // [SerializeField] private List<GameObject> birdsToSpawn = new List<GameObject>();
+    private Stack<GameObject> birdsToSpawn;// = new Stack<GameObject>();
 
     void Awake(){
+        
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
         birdSpawner = BirdsToSpawn.instance;
         birdManager = BirdManager.instance;
 
@@ -28,15 +35,14 @@ public class BranchSpawner : MonoBehaviour
             branchPositions.Add(branch);
         }
         
-        foreach (GameObject button in GameObject.FindGameObjectsWithTag("BranchButton")){
-            button.GetComponent<Button>().enabled = false;
+        foreach (Transform button in buttonGroup){
             branchButtons.Add(button.GetComponent<Button>());
+            button.GetComponent<Button>().enabled = false;
         }
-        birdsToSpawn = birdSpawner.GetBirdsToSpawn(numberOfBranches, numberOfEmptyBranches);
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
+
+        // birdsToSpawn = birdSpawner.GetBirdsToSpawn(numberOfBranches, numberOfEmptyBranches);
+        birdsToSpawn = new Stack<GameObject>(birdSpawner.GetBirdsToSpawn(numberOfBranches, numberOfEmptyBranches));
+
         for (int i = 0; i < numberOfBranches; i++){
             GameObject branchToSpawn = Instantiate(branchPrefab, branchPositions[i]);
             // if (i % 2 != 0) branchToSpawn.GetComponent<SpriteRenderer>().flipX = true;
@@ -49,11 +55,11 @@ public class BranchSpawner : MonoBehaviour
             
             if (birdManager.branches.Count < (numberOfBranches - numberOfEmptyBranches) + 1){
                 for (int x = 0; x < birdSpawner.MaxNumberOfBirdsOnBranch(); x++){
-                    GameObject birdToAdd = birdsToSpawn[Random.Range(0, birdsToSpawn.Count)];
-                    Instantiate(birdToAdd, branchToSpawn.transform);
-                    // bc.birdsOnBranch.Push(birdToAdd);
-                    // birdToAdd.transform.SetParent(birdManager.branches.Peek().transform);
-                    birdsToSpawn.Remove(birdToAdd);
+                    // GameObject birdToAdd = birdsToSpawn[Random.Range(0, birdsToSpawn.Count)];
+                    // birdsToSpawn.Remove(birdToAdd);
+
+                    Instantiate(birdsToSpawn.Pop(), branchToSpawn.transform);
+                    // Debug.Log(birdsToSpawn.Pop());
                 }
             }
         }
