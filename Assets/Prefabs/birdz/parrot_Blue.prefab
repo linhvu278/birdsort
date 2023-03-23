@@ -93,12 +93,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3235311478969068801}
-  - component: {fileID: 3235311478969068806}
+  - component: {fileID: 7104350237175244139}
   - component: {fileID: 3235311478969068803}
   - component: {fileID: 3235311478969068800}
   m_Layer: 0
   m_Name: parrot_Blue
-  m_TagString: Untagged
+  m_TagString: Bird
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -119,7 +119,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &3235311478969068806
+--- !u!212 &7104350237175244139
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -178,15 +178,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3235311478969068807}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4a204085fd8de148a225860c066e3b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   birdType: 4
-  animator: {fileID: 0}
   isSelected: 0
-  selectIndicator: {fileID: 3912502010559269369}
   flyAwayPoint: {fileID: 2624531380281380571, guid: 4d0cddaa194821c4b887ca5427f11f36, type: 3}
   flyAwaySound: {fileID: 3235311478969068800}
   birdSpeed: 1

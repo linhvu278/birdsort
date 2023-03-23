@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,15 +10,23 @@ public class MainGameManager : MonoBehaviour
 {
     public static MainGameManager instance;
 
+    private BranchSpawner branchSpawner;
+
     [SerializeField] private Button homeButton, replayButton;
     [SerializeField] private TextMeshProUGUI levelText;
+    private int levelId;
 
     void Start(){
+        branchSpawner = BranchSpawner.instance;
+
+        levelId = 1;
+        
         homeButton.onClick.AddListener(BackToMainMenu);
         replayButton.onClick.AddListener(ReplayLevel);
         levelText.GetComponent<TextMeshProUGUI>();
 
-        levelText.text = SceneManager.GetActiveScene().name;
+        // levelText.text = SceneManager.GetActiveScene().name;
+        levelText.text = String.Format("Level {0}", levelId);
 
         Application.targetFrameRate = 300;
     }
@@ -32,8 +41,9 @@ public class MainGameManager : MonoBehaviour
     }
     public void NextLevel(){
         if (SceneManager.GetActiveScene().buildIndex + 1 < SceneManager.sceneCountInBuildSettings){
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            // Debug.Log("next level");
+            // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            levelText.text = String.Format("Level {0}", levelId++);
+            Debug.Log("next level");
         }
     }
     public void EnableReplayButton(bool value){

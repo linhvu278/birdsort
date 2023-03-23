@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Branch
   - Bird
+  - BranchButton
+  - BirdSpawner
   layers:
   - Default
   - TransparentFX

@@ -33,7 +33,7 @@ public class WinScreenManager : MonoBehaviour
         if (value){
             winFilter.gameObject.SetActive(value);
             winPopUp.gameObject.SetActive(value);
-            winPopUp.DOMove(new Vector3(0, 0, 0), popUpSpeed).SetEase(Ease.OutBack);
+            winPopUp.DOMove(Vector3.zero, popUpSpeed).SetEase(Ease.OutBack);
             winMusic.Play();
             // mainGameManager.EnableReplayButton(false);
         }

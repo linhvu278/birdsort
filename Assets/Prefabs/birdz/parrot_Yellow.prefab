@@ -178,15 +178,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7194286451329147714}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4a204085fd8de148a225860c066e3b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   birdType: 5
-  animator: {fileID: 0}
   isSelected: 0
-  selectIndicator: {fileID: 421104647563530148}
   flyAwayPoint: {fileID: 2624531380281380571, guid: 4d0cddaa194821c4b887ca5427f11f36, type: 3}
   flyAwaySound: {fileID: 7194286451329147727}
   birdSpeed: 1

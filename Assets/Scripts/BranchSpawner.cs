@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class BranchSpawner : MonoBehaviour
 {
+    public static BranchSpawner instance;
+
     private BirdsToSpawn birdSpawner;
     private BirdManager birdManager;
 
@@ -23,7 +25,7 @@ public class BranchSpawner : MonoBehaviour
     private Stack<GameObject> birdsToSpawn;// = new Stack<GameObject>();
 
     void Awake(){
-        
+        if (instance == null) instance = this;
     }
     // Start is called before the first frame update
     void Start()
