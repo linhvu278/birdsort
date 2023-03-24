@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3863922450296815646}
   - component: {fileID: 3863922450296815617}
-  - component: {fileID: 3863922450296815647}
   - component: {fileID: 3863922450296815644}
   m_Layer: 0
   m_Name: GameController
@@ -46,29 +45,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 675b3d0b7ad5c3f41a998943f1eadca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  branchPrefab: {fileID: 0}
+  numberOfBranches: 4
+  numberOfEmptyBranches: 2
   branches: []
+  branchGroup: {fileID: 0}
   birdControllers: []
   selectedBranch: {fileID: 0}
   targetBranch: {fileID: 0}
   selectedBirds: []
   allBirds: []
---- !u!114 &3863922450296815647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3863922450296815616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29fbdd06486d4e748933650bcf83aef6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  branchPrefab: {fileID: 2968871292891150277, guid: 4301cfb07c048dc43beef0086db36840, type: 3}
-  numberOfBranches: 5
-  numberOfEmptyBranches: 2
-  branchGroup: {fileID: 0}
-  branchButtons: []
 --- !u!114 &3863922450296815644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,4 +69,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   homeButton: {fileID: 0}
   replayButton: {fileID: 0}
+  settingsButton: {fileID: 0}
   levelText: {fileID: 0}

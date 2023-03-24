@@ -46,10 +46,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   birdsToSpawn: []
   birdTypes:
-  - {fileID: 3235311478969068807, guid: 2906c645f8bd3f247bb05ce61caf3292, type: 3}
-  - {fileID: 4067168237642206277, guid: 06cbde327cfc01743bd59464698e3bf3, type: 3}
-  - {fileID: 5782809012254538062, guid: 2b7d175c6e8be9042b6aa0cf43e8326e, type: 3}
-  - {fileID: 197996576959650304, guid: c9fae39ac36a6144082fe94992e61693, type: 3}
-  - {fileID: 3288540976869207976, guid: 80cbec68c3a85b54a837c4d65577204f, type: 3}
-  - {fileID: 1691872277193003652, guid: cee4fbe662db4a847ac5058e287310d3, type: 3}
-  - {fileID: 7194286451329147714, guid: aa4a91fc665c18f429f8a705047b884f, type: 3}
+  - {fileID: 2518713351084829571, guid: 8f3d125c4085bf24d8de5f1f40f5aea2, type: 3}
+  - {fileID: 7965682799454834276, guid: f1b8e699da7fa8d4885739b9c98de279, type: 3}
+  - {fileID: 2964890369874363430, guid: 91da05e008c2d7f48a2f209b933de7f7, type: 3}
+  - {fileID: 1185136618394519886, guid: 35f44f9176bf9b049b2d88391472be23, type: 3}
+  - {fileID: 1000852877772448942, guid: 70f3d88f48234c348ab0d08c8f4a4ec0, type: 3}
+  - {fileID: 7972970691301967460, guid: ac3ab1ec0f6d8e749890071d6acfd373, type: 3}
+  - {fileID: 8250337737661913199, guid: e8b4fba9979e7b044b7fd72fc335c5dc, type: 3}

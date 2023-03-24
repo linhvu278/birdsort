@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class BirdController : MonoBehaviour
+public class BirdController : MonoBehaviour, IPointerClickHandler
 {
     private BirdManager birdManager;
     private BirdsToSpawn birdSpawner;
@@ -17,7 +18,7 @@ public class BirdController : MonoBehaviour
     private float[] branchYpos = {0.1f, 0.1f, 0, 0};
 
     [SerializeField] public Stack<Bird> birdsOnBranch = new Stack<Bird>();
-    public Button branchButton;
+    // public Button branchButton;
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +30,10 @@ public class BirdController : MonoBehaviour
 
         // branchYpos = transform.position.y;
 
-        branchButton.onClick.AddListener(OnTouch);
+        // branchButton.onClick.AddListener(OnTouch);
+    }
+    public void OnPointerClick(PointerEventData eventData){
+        birdManager.SelectBranch(GetComponent<BirdController>());
     }
     public void GetBirdsOnBranch(){
         birdsOnBranch = new Stack<Bird>(transform.GetComponentsInChildren<Bird>());
@@ -37,9 +41,9 @@ public class BirdController : MonoBehaviour
             birdsOnBranch.ElementAt(birdsOnBranch.Count-1-i).SetBirdPos(branchXpos[i], branchYpos[i], i);
         }
     }
-    public void OnTouch(){
-        birdManager.SelectBranch(GetComponent<BirdController>());
-    }
+    // public void OnTouch(){
+    //     birdManager.SelectBranch(GetComponent<BirdController>());
+    // }
     // public void AddBirds(List<Bird> selectedBirds){
     //     foreach (Bird bird in selectedBirds){
     //         bird.transform.SetParent(transform);
@@ -58,9 +62,9 @@ public class BirdController : MonoBehaviour
         bird.StartCoroutine(bird.FlipTheBird());
     }
     public void ClearBirds(){
-        foreach (Bird bird in birdsOnBranch){
-            bird.transform.SetParent(null);
-        }
+        // foreach (Bird bird in birdsOnBranch){
+        //     bird.transform.SetParent(null);
+        // }
         birdsOnBranch.Clear();
     }
     public int EmptySpacesOnBranch(){

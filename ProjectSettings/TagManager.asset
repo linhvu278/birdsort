@@ -8,6 +8,10 @@ TagManager:
   - Bird
   - BranchButton
   - BirdSpawner
+  - HomeButton
+  - ReplayButton
+  - LevelText
+  - SettingsButton
   layers:
   - Default
   - TransparentFX

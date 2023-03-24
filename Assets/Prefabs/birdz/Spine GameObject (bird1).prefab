@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3498535670383931688}
   m_Layer: 0
   m_Name: Spine GameObject (bird1)
-  m_TagString: Untagged
+  m_TagString: Bird
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -136,6 +136,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   birdType: 0
-  eventName: 
   isSelected: 0
-  flyAwaySound: {fileID: 0}

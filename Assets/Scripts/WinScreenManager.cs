@@ -15,30 +15,47 @@ public class WinScreenManager : MonoBehaviour
     [SerializeField] private Button nextLevelButton;
     [SerializeField] private AudioSource winMusic;
     private float popUpSpeed = 1f;
+    // [SerializeField] private Vector3 ogPos;
+    private Vector3 ogPos = new Vector3(0, 10f, 0);
 
+    void Awake(){
+        if (instance == null) instance = this;
+    }
     void Start(){
         mainGameManager = MainGameManager.instance;
         birdSpawner = BirdsToSpawn.instance;
 
         nextLevelButton.onClick.AddListener(NextLevel);
-        EnableWinScreen(false);
+        
+        // EnableWinScreen(false);
+        // ogPos = transform.position;
+        Debug.Log(ogPos);
     }
 
     void NextLevel(){
-        // Debug.Log("next level");
-        birdSpawner.ClearBirdsList();
+        // winFilter.gameObject.SetActive(false);
+        // winPopUp.gameObject.SetActive(false);
+        // winPopUp.DOMove(ogPos, popUpSpeed).SetEase(Ease.OutBack);
+
+        EnableWinScreen(false);
+        winPopUp.position = ogPos;
         mainGameManager.NextLevel();
     }
     public void EnableWinScreen(bool value){
-        if (value){
-            winFilter.gameObject.SetActive(value);
-            winPopUp.gameObject.SetActive(value);
-            winPopUp.DOMove(Vector3.zero, popUpSpeed).SetEase(Ease.OutBack);
-            winMusic.Play();
-            // mainGameManager.EnableReplayButton(false);
+        switch (value){
+            case true:
+                winFilter.gameObject.SetActive(true);
+                // winPopUp.gameObject.SetActive(true);
+                winPopUp.DOMove(Vector3.zero, popUpSpeed).SetEase(Ease.OutBack);
+                winMusic.Play();
+                // mainGameManager.EnableReplayButton(false);
+                break;
+            case false:
+                winFilter.gameObject.SetActive(false);
+                // winPopUp.gameObject.SetActive(false);
+                // winPopUp.DOMove(ogPos, popUpSpeed).SetEase(Ease.OutBack);
+                // winPopUp.position = ogPos;
+                break;
         }
-    }
-    void Awake(){
-        if (instance == null) instance = this;
     }
 }

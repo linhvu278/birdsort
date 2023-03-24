@@ -17,8 +17,8 @@ public class Bird : MonoBehaviour
     private MeshRenderer meshRenderer;
     
     [SerializeField] private bool isSelected = false;
-    private Vector3 flyAwayPosition = new Vector3(6.9f, 6.9f, 0);
-    private float birdSpeed = 1f;
+    private Vector3 flyAwayPosition = new Vector3(0, 6.9f, 0);
+    private float birdSpeed = 1.5f;
     private Vector3 direction;
     // [SerializeField] public Transform flyAwayPoint;
     // [SerializeField] private AudioSource flyAwaySound;
@@ -46,44 +46,38 @@ public class Bird : MonoBehaviour
     public void SetBirdPos(float x, float y, int i){
         Vector3 newDirection = new Vector3(x, y, 0);
         transform.localPosition = newDirection;
-        // GetComponent<SpriteRenderer>().flipX = value;
         // if (!value) transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
         skeletonAnimation.Skeleton.ScaleX = -skeletonAnimation.Skeleton.ScaleX;
         meshRenderer.sortingOrder = i;
     }
     public void SelectBird(){
         isSelected = !isSelected;
-        // change to touching animation here
         if (isSelected) skeletonAnimation.AnimationState.SetAnimation(1, touchingAnimation, true);
         else skeletonAnimation.AnimationState.AddEmptyAnimation(1, 0, 0);
-    }
-    public void SetMovingDirection(float x, float y){
-        meshRenderer.sortingOrder = 10;
-        direction = new Vector3(x, y, 0);
-        transform.DOLocalMove(direction, birdSpeed);
-        skeletonAnimation.AnimationState.SetAnimation(0, flyAnimation, true);
-        skeletonAnimation.AnimationState.AddAnimation(0, idleAnimation, true, birdSpeed);
-        // StartCoroutine(FlipTheBird());
     }
     public void SortOrder(int i){
         meshRenderer.sortingOrder = i;
     }
-    public Vector3 GetMovingDirection(){
-        return direction;
+    public void SetMovingDirection(float x, float y){
+        meshRenderer.sortingOrder = 10;
+        direction = new Vector3(x, y, 0);
+        transform.DOLocalMove(direction, birdSpeed).SetEase(Ease.InOutQuint);
+        skeletonAnimation.AnimationState.SetAnimation(0, flyAnimation, true);
+        skeletonAnimation.AnimationState.AddAnimation(0, idleAnimation, true, birdSpeed);
+        // StartCoroutine(FlipTheBird());
     }
     public IEnumerator FlipTheBird(){
         yield return new WaitForSeconds(birdSpeed);
         skeletonAnimation.Skeleton.ScaleX = -skeletonAnimation.Skeleton.ScaleX;
         skeletonAnimation.AnimationState.SetAnimation(0, groundingAnimation, false);
         skeletonAnimation.AnimationState.AddAnimation(0, idleAnimation, true, 0);
-        // GetComponent<SpriteRenderer>().flipX = value;
         // if (value) transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
     }
     public IEnumerator FlyAway(){
         yield return new WaitForSeconds(birdSpeed);
-        // GetComponent<SpriteRenderer>().flipX = true;
-        transform.DOMove(flyAwayPosition, birdSpeed * 2f);
+        transform.DOMove(flyAwayPosition, birdSpeed);
         skeletonAnimation.AnimationState.SetAnimation(0, flyAnimation, false);
+        transform.SetParent(null);
         // flyAwaySound.Play();
     }
     void OnDestroy(){
@@ -92,5 +86,5 @@ public class Bird : MonoBehaviour
 }
 
 public enum BirdType{
-    type1, type2, type3, type4, type5, type6, type7
+    bird1, bird2, bird3, bird4, bird5, bird6, bird7
 }

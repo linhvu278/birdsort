@@ -14,12 +14,12 @@ public class BranchSpawner : MonoBehaviour
     [SerializeField] public GameObject branchPrefab;
     private const int minNumberOfBranches = 4;
     private const int maxNumberOfBranches = 8;
-    [Range (minNumberOfBranches, maxNumberOfBranches)] public int numberOfBranches;
-    [Range (1, 2)] public int numberOfEmptyBranches;
+    /*[Range (minNumberOfBranches, maxNumberOfBranches)]*/ public int numberOfBranches = minNumberOfBranches;
+    // [Range (1, 2)] public int numberOfEmptyBranches;
+    public int numberOfEmptyBranches = 2;
     [SerializeField] private Transform branchGroup;
     private List<Transform> branchPositions = new List<Transform>();
     private Stack<GameObject> branchesToSpawn = new Stack<GameObject>();
-    [SerializeField] public Transform buttonGroup;
     private List<Button> branchButtons = new List<Button>();
     // [SerializeField] private List<GameObject> birdsToSpawn = new List<GameObject>();
     private Stack<GameObject> birdsToSpawn;// = new Stack<GameObject>();
@@ -37,34 +37,28 @@ public class BranchSpawner : MonoBehaviour
             branchPositions.Add(branch);
         }
         
-        foreach (Transform button in buttonGroup){
-            branchButtons.Add(button.GetComponent<Button>());
-            button.GetComponent<Button>().enabled = false;
-        }
-
-        // birdsToSpawn = birdSpawner.GetBirdsToSpawn(numberOfBranches, numberOfEmptyBranches);
-        birdsToSpawn = new Stack<GameObject>(birdSpawner.GetBirdsToSpawn(numberOfBranches, numberOfEmptyBranches));
-
-        for (int i = 0; i < numberOfBranches; i++){
-            GameObject branchToSpawn = Instantiate(branchPrefab, branchPositions[i]);
-            // if (i % 2 != 0) branchToSpawn.GetComponent<SpriteRenderer>().flipX = true;
-            birdManager.branches.Add(branchToSpawn);
-            // birdManager.birdControllers.Add(branchToSpawn.GetComponent<BirdController>());
-
-            BirdController bc = branchToSpawn.GetComponent<BirdController>();
-            bc.branchButton = branchButtons[i];
-            branchButtons[i].enabled = true;
-            
-            if (birdManager.branches.Count < (numberOfBranches - numberOfEmptyBranches) + 1){
-                for (int x = 0; x < birdSpawner.MaxNumberOfBirdsOnBranch(); x++){
-                    // GameObject birdToAdd = birdsToSpawn[Random.Range(0, birdsToSpawn.Count)];
-                    // birdsToSpawn.Remove(birdToAdd);
-
-                    Instantiate(birdsToSpawn.Pop(), branchToSpawn.transform);
-                    // Debug.Log(birdsToSpawn.Pop());
-                }
-            }
-        }
-        birdManager.GetBirdControllers();
+        // SpawnBranches();
     }
+    // public void SpawnBranches(){
+    //     // birdsToSpawn = birdSpawner.GetBirdsToSpawn(numberOfBranches, numberOfEmptyBranches);
+    //     birdsToSpawn = new Stack<GameObject>(birdSpawner.GetBirdsToSpawn(numberOfBranches, numberOfEmptyBranches));
+
+    //     for (int i = 0; i < numberOfBranches; i++){
+    //         GameObject branchToSpawn = Instantiate(branchPrefab, branchPositions[i]);
+    //         // if (i % 2 != 0) branchToSpawn.GetComponent<SpriteRenderer>().flipX = true;
+    //         birdManager.branches.Add(branchToSpawn);
+    //         // birdManager.birdControllers.Add(branchToSpawn.GetComponent<BirdController>());
+            
+    //         if (birdManager.branches.Count < (numberOfBranches - numberOfEmptyBranches) + 1){
+    //             for (int x = 0; x < birdSpawner.MaxNumberOfBirdsOnBranch(); x++){
+    //                 // GameObject birdToAdd = birdsToSpawn[Random.Range(0, birdsToSpawn.Count)];
+    //                 // birdsToSpawn.Remove(birdToAdd);
+
+    //                 Instantiate(birdsToSpawn.Pop(), branchToSpawn.transform);
+    //                 // Debug.Log(birdsToSpawn.Pop());
+    //             }
+    //         }
+    //     }
+    //     birdManager.GetBirdControllers();
+    // }
 }
