@@ -86,5 +86,5 @@ public class Bird : MonoBehaviour
 }
 
 public enum BirdType{
-    bird1, bird2, bird3, bird4, bird5, bird6, bird7
+    bird1, bird2, bird3, bird4, bird5, bird6, bird7, bird8, bird9, bird10, bird11, bird12
 }

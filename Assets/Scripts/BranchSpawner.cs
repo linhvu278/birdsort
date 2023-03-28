@@ -25,17 +25,17 @@ public class BranchSpawner : MonoBehaviour
     private Stack<GameObject> birdsToSpawn;// = new Stack<GameObject>();
 
     void Awake(){
-        if (instance == null) instance = this;
+        // if (instance == null) instance = this;
     }
     // Start is called before the first frame update
     void Start()
     {
-        birdSpawner = BirdsToSpawn.instance;
-        birdManager = BirdManager.instance;
+        // birdSpawner = BirdsToSpawn.instance;
+        // birdManager = BirdManager.instance;
 
-        foreach (Transform branch in branchGroup){
-            branchPositions.Add(branch);
-        }
+        // foreach (Transform branch in branchGroup){
+        //     branchPositions.Add(branch);
+        // }
         
         // SpawnBranches();
     }

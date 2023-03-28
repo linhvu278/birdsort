@@ -6,21 +6,62 @@ using DG.Tweening;
 
 public class SettingsScreenManager : MonoBehaviour
 {
-    [SerializeField] private Transform settingsPopup, settingsFilter;
-    [SerializeField] private Button toggleMusicButton, toggleSoundButton, toggleVibrationButton;
+    public static SettingsScreenManager instance;
 
+    [SerializeField] private Transform settingsPopup, settingsFilter;
+    [SerializeField] private Button closeButton, restorePurchasesButton;
+    [SerializeField] private Toggle toggleMusicButton, toggleSfxButton, toggleVibrationButton;
+
+    private AudioManager audioManager;
+
+    private float settingsPopupSpeed = 1f;
+    private Vector3 ogPos = new Vector3(0, 10f, 0);
+
+    void Awake(){
+        if (instance == null) instance = this;
+    }
     void Start(){
-        toggleMusicButton.onClick.AddListener(ToggleMusic);
-        toggleSoundButton.onClick.AddListener(ToggleSound);
-        toggleVibrationButton.onClick.AddListener(ToggleVibration);
+        audioManager = AudioManager.instance;
+
+        closeButton.onClick.AddListener(delegate{
+            EnableSettingsScreen(false);
+        });
+
+        toggleMusicButton.onValueChanged.AddListener(delegate{
+            ToggleMusic(toggleMusicButton);
+        });
+        toggleSfxButton.onValueChanged.AddListener(delegate{
+            ToggleSfx(toggleSfxButton);
+        });
+        toggleVibrationButton.onValueChanged.AddListener(delegate{
+            ToggleVibration(toggleVibrationButton);
+        });
+
+        restorePurchasesButton.onClick.AddListener(RestorePurchases);
+        
+        EnableSettingsScreen(false);
     }
-    void ToggleMusic(){
-        Debug.Log("toggle music");
+    void ToggleMusic(Toggle toggle){
+        audioManager.ToggleBgMusic(toggleMusicButton.isOn);
     }
-    void ToggleSound(){
-        Debug.Log("toggle sound");
+    void ToggleSfx(Toggle toggle){
+        audioManager.ToggleSfx(toggleSfxButton.isOn);
     }
-    void ToggleVibration(){
-        Debug.Log("toggle vibration");
+    void ToggleVibration(Toggle toggle){
+        Debug.Log("toggle vibration: " + toggleVibrationButton.isOn);
+    }
+    public void EnableSettingsScreen(bool value){
+        settingsFilter.gameObject.SetActive(value);
+        switch (value){
+            case true:
+                settingsPopup.DOMove(Vector3.zero, settingsPopupSpeed).SetEase(Ease.OutBack);
+                break;
+            case false:
+                settingsPopup.position = ogPos;
+                break;
+        }
+    }
+    void RestorePurchases(){
+        Debug.Log("purchases restored");
     }
 }

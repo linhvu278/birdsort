@@ -10,12 +10,11 @@ public class WinScreenManager : MonoBehaviour
 
     private MainGameManager mainGameManager;
     private BirdsToSpawn birdSpawner;
+    private AudioManager audioManager;
 
     [SerializeField] private Transform winPopUp, winFilter;
     [SerializeField] private Button nextLevelButton;
-    [SerializeField] private AudioSource winMusic;
-    private float popUpSpeed = 1f;
-    // [SerializeField] private Vector3 ogPos;
+    private float winPopupSpeed = 1f;
     private Vector3 ogPos = new Vector3(0, 10f, 0);
 
     void Awake(){
@@ -24,37 +23,26 @@ public class WinScreenManager : MonoBehaviour
     void Start(){
         mainGameManager = MainGameManager.instance;
         birdSpawner = BirdsToSpawn.instance;
+        audioManager = AudioManager.instance;
 
         nextLevelButton.onClick.AddListener(NextLevel);
-        
-        // EnableWinScreen(false);
-        // ogPos = transform.position;
-        Debug.Log(ogPos);
+
+        EnableWinScreen(false);
     }
 
     void NextLevel(){
-        // winFilter.gameObject.SetActive(false);
-        // winPopUp.gameObject.SetActive(false);
-        // winPopUp.DOMove(ogPos, popUpSpeed).SetEase(Ease.OutBack);
-
         EnableWinScreen(false);
-        winPopUp.position = ogPos;
         mainGameManager.NextLevel();
     }
     public void EnableWinScreen(bool value){
+        winFilter.gameObject.SetActive(value);
         switch (value){
             case true:
-                winFilter.gameObject.SetActive(true);
-                // winPopUp.gameObject.SetActive(true);
-                winPopUp.DOMove(Vector3.zero, popUpSpeed).SetEase(Ease.OutBack);
-                winMusic.Play();
-                // mainGameManager.EnableReplayButton(false);
+                winPopUp.DOMove(Vector3.zero, winPopupSpeed).SetEase(Ease.OutBack);
+                audioManager.PlayWinSound();
                 break;
             case false:
-                winFilter.gameObject.SetActive(false);
-                // winPopUp.gameObject.SetActive(false);
-                // winPopUp.DOMove(ogPos, popUpSpeed).SetEase(Ease.OutBack);
-                // winPopUp.position = ogPos;
+                winPopUp.position = ogPos;
                 break;
         }
     }

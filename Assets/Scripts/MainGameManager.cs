@@ -14,12 +14,13 @@ public class MainGameManager : MonoBehaviour
     private BirdManager birdManager;
     private BirdsToSpawn birdSpawner;
     private WinScreenManager winScreenManager;
+    private SettingsScreenManager settingsScreenManager;
 
     [SerializeField] private Button homeButton, replayButton, settingsButton;
     [SerializeField] private TextMeshProUGUI levelText;
 
     private int levelId;
-    private const int numberOfLevels = 10;
+    private const int numberOfLevels = 14;
 
     void Awake(){
         // DontDestroyOnLoad(gameObject);
@@ -32,6 +33,7 @@ public class MainGameManager : MonoBehaviour
         birdManager = BirdManager.instance;
         birdSpawner = BirdsToSpawn.instance;
         winScreenManager = WinScreenManager.instance;
+        settingsScreenManager = SettingsScreenManager.instance;
 
         levelId = 1;
 
@@ -40,8 +42,9 @@ public class MainGameManager : MonoBehaviour
         settingsButton = GameObject.FindGameObjectWithTag("SettingsButton").GetComponent<Button>();
         levelText = GameObject.FindGameObjectWithTag("LevelText").GetComponent<TextMeshProUGUI>();
         
-        homeButton.onClick.AddListener(BackToMainMenu);
+        // homeButton.onClick.AddListener(BackToMainMenu);
         replayButton.onClick.AddListener(ReplayLevel);
+        settingsButton.onClick.AddListener(SettingsMenu);
         levelText.GetComponent<TextMeshProUGUI>();
 
         // levelText.text = SceneManager.GetActiveScene().name;
@@ -73,18 +76,18 @@ public class MainGameManager : MonoBehaviour
             // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
-    public void WinLevel(){
-        winScreenManager.EnableWinScreen(true);
-    }
-    public void LoseLevel(){
-        // lose
-    }
     public void EnableReplayButton(bool value){
         replayButton.enabled = value;
     }
     void SettingsMenu(){
         // open settings menu
-        Debug.Log("settings");
+        settingsScreenManager.EnableSettingsScreen(true);
+    }
+    public void WinLevel(){
+        winScreenManager.EnableWinScreen(true);
+    }
+    public void LoseLevel(){
+        // lose
     }
     void BackToMainMenu(){
         // destroy list of birds to spawn

@@ -1,49 +1,46 @@
+// using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class BirdController : MonoBehaviour, IPointerClickHandler
 {
     private BirdManager birdManager;
     private BirdsToSpawn birdSpawner;
-
-    private int maxNumberOfBirds;// = 4;
-    public int branchId;// {get;set;}
-    public bool isOddBranch = false;// {get;set;}
-    // private float branchYpos;
-    private float[] branchXpos = {-0.5f, 0.5f, 1.5f, 2.5f};
-    private float[] branchYpos = {0.1f, 0.1f, 0, 0};
+    private PlayButtonGroupManager playButtonGroupManager;
+    private UndoList undoList;
 
     [SerializeField] public Stack<Bird> birdsOnBranch = new Stack<Bird>();
-    // public Button branchButton;
+    public int branchId;
+    public bool isOddBranch = false;
+    private float[] branchXpos = {-0.5f, 0.5f, 1.5f, 2.5f};
+    private float[] branchYpos = {0.1f, 0.1f, 0, 0};
+    
+    private int maxNumberOfBirds;// = 4;
 
-    // Start is called before the first frame update
     void Start()
     {
         birdManager = BirdManager.instance;
         birdSpawner = BirdsToSpawn.instance;
+        playButtonGroupManager = PlayButtonGroupManager.instance;
+        undoList = UndoList.instance;
 
         maxNumberOfBirds = birdSpawner.MaxNumberOfBirdsOnBranch();
-
-        // branchYpos = transform.position.y;
-
-        // branchButton.onClick.AddListener(OnTouch);
     }
     public void OnPointerClick(PointerEventData eventData){
-        birdManager.SelectBranch(GetComponent<BirdController>());
+        if (playButtonGroupManager.canSwap && birdsOnBranch.Count > 1) SwapBirds();
+        else birdManager.SelectBranch(GetComponent<BirdController>());
     }
     public void GetBirdsOnBranch(){
         birdsOnBranch = new Stack<Bird>(transform.GetComponentsInChildren<Bird>());
         for (int i = 0; i < birdsOnBranch.Count; i++){
-            birdsOnBranch.ElementAt(birdsOnBranch.Count-1-i).SetBirdPos(branchXpos[i], branchYpos[i], i);
+            birdsOnBranch.ElementAt(i).SetBirdPos(branchXpos[birdsOnBranch.Count - 1 - i],
+                                                  branchYpos[birdsOnBranch.Count - 1 - i],
+                                                  birdsOnBranch.Count - 1 - i);
         }
     }
-    // public void OnTouch(){
-    //     birdManager.SelectBranch(GetComponent<BirdController>());
-    // }
     // public void AddBirds(List<Bird> selectedBirds){
     //     foreach (Bird bird in selectedBirds){
     //         bird.transform.SetParent(transform);
@@ -56,16 +53,36 @@ public class BirdController : MonoBehaviour, IPointerClickHandler
     }
     public void MoveBirds(Bird bird, float x, float y){
         bird.SetMovingDirection(x, y);
-        // bird.StartCoroutine(bird.FlipTheBird());
     }
     public void FlipBirds(Bird bird){
         bird.StartCoroutine(bird.FlipTheBird());
     }
     public void ClearBirds(){
-        // foreach (Bird bird in birdsOnBranch){
-        //     bird.transform.SetParent(null);
-        // }
         birdsOnBranch.Clear();
+    }
+    public void SwapBirds(){
+        undoList.AddUndoTurn(this, this, new List<Bird>(), birdsOnBranch.ToList());
+        List<Bird> list = birdsOnBranch.OrderBy(x => Random.Range(0, birdsOnBranch.Count)).ToList();
+        birdsOnBranch.Clear();
+        foreach (Bird bird in list) birdsOnBranch.Push(bird);
+
+        for (int i = 0; i < birdsOnBranch.Count; i++){
+            birdsOnBranch.ElementAt(i).SetMovingDirection(branchXpos[birdsOnBranch.Count-1-i], branchYpos[birdsOnBranch.Count-1-i]);
+        }
+
+        playButtonGroupManager.AfterSwap();
+
+        birdManager.UnselectBranch();
+    }
+    public void RevertBirds(List<Bird> birdPos){
+        // revert birds to original positions
+        birdsOnBranch.Clear();
+        birdPos.Reverse();
+        foreach (Bird bird in birdPos) birdsOnBranch.Push(bird);
+
+        for (int i = 0; i < birdsOnBranch.Count; i++){
+            birdsOnBranch.ElementAt(i).SetMovingDirection(branchXpos[birdsOnBranch.Count-1-i], branchYpos[birdsOnBranch.Count-1-i]);
+        }
     }
     public int EmptySpacesOnBranch(){
         return maxNumberOfBirds - birdsOnBranch.Count;
