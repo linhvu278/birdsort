@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 600a3bfbf35ebc449ae554f4715fde2a, type: 3}
+  m_Name: scenery5
+  m_EditorClassIdentifier: 
+  itemID: 5
+  shopItemType: 0
+  itemIcon: {fileID: 21300000, guid: 1373e325b4fda234fa395f8f4ce0b2b7, type: 3}
+  itemPrice: 1234
+  itemSpriteData: {fileID: 21300000, guid: 449c52cd5b548594daff686c0752c4be, type: 3}

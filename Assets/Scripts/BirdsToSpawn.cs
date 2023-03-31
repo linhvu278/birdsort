@@ -2,10 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Spine.Unity;
 
 public class BirdsToSpawn : MonoBehaviour
 {
     public static BirdsToSpawn instance;
+
+    private SkinChanger skinChanger;
+    private string currentSkin;
 
     private const int maxNumberOfBirdsOnBranch = 4;
     [SerializeField] private List<GameObject> birdsToSpawn = new List<GameObject>();
@@ -18,6 +22,11 @@ public class BirdsToSpawn : MonoBehaviour
         if (instance == null) instance = this;
         else Destroy(gameObject);
     }
+    void Start(){
+        skinChanger = SkinChanger.instance;
+        skinChanger.getCurrentBirdSkin += GetBirdSkin;
+        GetBirdSkin();
+    }
     public List<GameObject> GetBirdsToSpawn(int numberOfBranches, int numberOfEmptyBranches){
         if (birdsToSpawn.Count == 0){
             for (int i = 0; i < numberOfBranches - numberOfEmptyBranches; i++){
@@ -25,6 +34,11 @@ public class BirdsToSpawn : MonoBehaviour
                 for (int x = 0; x < maxNumberOfBirdsOnBranch; x++){
                     birdsToSpawn.Add(birdTypes[i]);
                 }
+            }
+            // GetBirdSkin();
+            foreach (GameObject bird in birdsToSpawn){
+                SkeletonAnimation skelAni = bird.GetComponent<SkeletonAnimation>();
+                skelAni.Skeleton.SetSkin(currentSkin);
             }
             RandomBirdsToSpawn(birdsToSpawn);
         }
@@ -46,5 +60,9 @@ public class BirdsToSpawn : MonoBehaviour
     }
     public int MaxNumberOfBirdsOnBranch(){
         return maxNumberOfBirdsOnBranch;
+    }
+    void GetBirdSkin(){
+        currentSkin = skinChanger.currentBirdSkin;
+        Debug.Log(currentSkin);
     }
 }

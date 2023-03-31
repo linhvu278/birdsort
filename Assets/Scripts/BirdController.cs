@@ -15,8 +15,8 @@ public class BirdController : MonoBehaviour, IPointerClickHandler
     [SerializeField] public Stack<Bird> birdsOnBranch = new Stack<Bird>();
     public int branchId;
     public bool isOddBranch = false;
-    private float[] branchXpos = {-0.5f, 0.5f, 1.5f, 2.5f};
-    private float[] branchYpos = {0.1f, 0.1f, 0, 0};
+    private float[] branchXpos = {3f, 4f, 5f, 6f};
+    private float[] branchYpos = {0.1f, 0f, 0, 0};
     
     private int maxNumberOfBirds;// = 4;
 

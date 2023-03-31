@@ -8,7 +8,7 @@ public class PlayButtonGroupManager : MonoBehaviour
 {
     public static PlayButtonGroupManager instance;
 
-    [SerializeField] private Button removeAdsButton, addBranchButton, swapButton, undoButton, skipButton;
+    [SerializeField] private Button /*removeAdsButton,*/ addBranchButton, swapButton, undoButton, skipButton;
     [SerializeField] private TextMeshProUGUI addBranchCounter, swapCounter, undoCounter, skipCounter;
     private int addBranchInt, swapInt, undoInt, skipInt;
 
@@ -16,9 +16,8 @@ public class PlayButtonGroupManager : MonoBehaviour
     private BirdManager birdManager;
     private UndoList undoList;
 
-    [SerializeField] public TextMeshProUGUI swapText;
-
     public bool canSwap;
+    [SerializeField] public TextMeshProUGUI swapText;
 
     void Awake(){
         if (instance == null) instance = this;
@@ -33,7 +32,7 @@ public class PlayButtonGroupManager : MonoBehaviour
         undoButton.onClick.AddListener(Undo);
         skipButton.onClick.AddListener(Skip);
 
-        removeAdsButton.onClick.AddListener(RemoveAds);
+        // removeAdsButton.onClick.AddListener(RemoveAds);
 
         addBranchInt = 100;
         swapInt = 100;
@@ -97,7 +96,7 @@ public class PlayButtonGroupManager : MonoBehaviour
     public void SetSkipInt(int x){
         skipInt = x;
     }
-    void RemoveAds(){
-        Debug.Log("ads removed");
-    }
+    // void RemoveAds(){
+    //     Debug.Log("ads removed");
+    // }
 }

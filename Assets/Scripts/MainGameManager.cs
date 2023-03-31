@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+// using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
@@ -15,12 +15,14 @@ public class MainGameManager : MonoBehaviour
     private BirdsToSpawn birdSpawner;
     private WinScreenManager winScreenManager;
     private SettingsScreenManager settingsScreenManager;
+    private AudioManager audioManager;
 
-    [SerializeField] private Button homeButton, replayButton, settingsButton;
+    [SerializeField] private Button /*homeButton ,settingsButton*/ pauseButton, replayButton;
     [SerializeField] private TextMeshProUGUI levelText;
 
     private int levelId;
     private const int numberOfLevels = 14;
+    private bool isVibrationOn;
 
     void Awake(){
         // DontDestroyOnLoad(gameObject);
@@ -34,17 +36,20 @@ public class MainGameManager : MonoBehaviour
         birdSpawner = BirdsToSpawn.instance;
         winScreenManager = WinScreenManager.instance;
         settingsScreenManager = SettingsScreenManager.instance;
+        audioManager = AudioManager.instance;
 
         levelId = 1;
 
         // homeButton = GameObject.FindGameObjectWithTag("HomeButton").GetComponent<Button>();
+        // settingsButton = GameObject.FindGameObjectWithTag("SettingsButton").GetComponent<Button>();
+        pauseButton = GameObject.FindGameObjectWithTag("PauseButton").GetComponent<Button>();
         replayButton = GameObject.FindGameObjectWithTag("ReplayButton").GetComponent<Button>();
-        settingsButton = GameObject.FindGameObjectWithTag("SettingsButton").GetComponent<Button>();
         levelText = GameObject.FindGameObjectWithTag("LevelText").GetComponent<TextMeshProUGUI>();
         
         // homeButton.onClick.AddListener(BackToMainMenu);
+        // settingsButton.onClick.AddListener(SettingsMenu);
+        pauseButton.onClick.AddListener(SettingsMenu);
         replayButton.onClick.AddListener(ReplayLevel);
-        settingsButton.onClick.AddListener(SettingsMenu);
         levelText.GetComponent<TextMeshProUGUI>();
 
         // levelText.text = SceneManager.GetActiveScene().name;
@@ -85,6 +90,8 @@ public class MainGameManager : MonoBehaviour
     }
     public void WinLevel(){
         winScreenManager.EnableWinScreen(true);
+        audioManager.PlayWinSound();
+        if (isVibrationOn) Handheld.Vibrate();
     }
     public void LoseLevel(){
         // lose
@@ -92,5 +99,8 @@ public class MainGameManager : MonoBehaviour
     void BackToMainMenu(){
         // destroy list of birds to spawn
         Debug.Log("back to main menu");
+    }
+    public void ToggleVibration(bool value){
+        isVibrationOn = value;
     }
 }

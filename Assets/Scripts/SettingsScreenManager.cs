@@ -9,10 +9,12 @@ public class SettingsScreenManager : MonoBehaviour
     public static SettingsScreenManager instance;
 
     [SerializeField] private Transform settingsPopup, settingsFilter;
-    [SerializeField] private Button closeButton, restorePurchasesButton;
+    [SerializeField] private Button closeButton/*, restorePurchasesButton*/, shopButton, removeAdsButton;
     [SerializeField] private Toggle toggleMusicButton, toggleSfxButton, toggleVibrationButton;
 
     private AudioManager audioManager;
+    private MainGameManager mainGameManager;
+    private ShopScreenManager shopScreenManager;
 
     private float settingsPopupSpeed = 1f;
     private Vector3 ogPos = new Vector3(0, 10f, 0);
@@ -22,6 +24,8 @@ public class SettingsScreenManager : MonoBehaviour
     }
     void Start(){
         audioManager = AudioManager.instance;
+        mainGameManager = MainGameManager.instance;
+        shopScreenManager = ShopScreenManager.instance;
 
         closeButton.onClick.AddListener(delegate{
             EnableSettingsScreen(false);
@@ -37,7 +41,9 @@ public class SettingsScreenManager : MonoBehaviour
             ToggleVibration(toggleVibrationButton);
         });
 
-        restorePurchasesButton.onClick.AddListener(RestorePurchases);
+        // restorePurchasesButton.onClick.AddListener(RestorePurchases);
+        shopButton.onClick.AddListener(OpenShopMenu);
+        removeAdsButton.onClick.AddListener(RemoveAds);
         
         EnableSettingsScreen(false);
     }
@@ -48,7 +54,8 @@ public class SettingsScreenManager : MonoBehaviour
         audioManager.ToggleSfx(toggleSfxButton.isOn);
     }
     void ToggleVibration(Toggle toggle){
-        Debug.Log("toggle vibration: " + toggleVibrationButton.isOn);
+        // Debug.Log("toggle vibration: " + toggleVibrationButton.isOn);
+        mainGameManager.ToggleVibration(toggleVibrationButton.isOn);
     }
     public void EnableSettingsScreen(bool value){
         settingsFilter.gameObject.SetActive(value);
@@ -61,7 +68,14 @@ public class SettingsScreenManager : MonoBehaviour
                 break;
         }
     }
-    void RestorePurchases(){
-        Debug.Log("purchases restored");
+    // void RestorePurchases(){
+    //     Debug.Log("purchases restored");
+    // }
+    void OpenShopMenu(){
+        shopScreenManager.EnableShopScreen(true);
+        EnableSettingsScreen(false);
+    }
+    void RemoveAds(){
+        Debug.Log("ads removed");
     }
 }

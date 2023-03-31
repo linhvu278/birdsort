@@ -10,7 +10,7 @@ public class WinScreenManager : MonoBehaviour
 
     private MainGameManager mainGameManager;
     private BirdsToSpawn birdSpawner;
-    private AudioManager audioManager;
+    // private AudioManager audioManager;
 
     [SerializeField] private Transform winPopUp, winFilter;
     [SerializeField] private Button nextLevelButton;
@@ -23,7 +23,7 @@ public class WinScreenManager : MonoBehaviour
     void Start(){
         mainGameManager = MainGameManager.instance;
         birdSpawner = BirdsToSpawn.instance;
-        audioManager = AudioManager.instance;
+        // audioManager = AudioManager.instance;
 
         nextLevelButton.onClick.AddListener(NextLevel);
 
@@ -39,7 +39,7 @@ public class WinScreenManager : MonoBehaviour
         switch (value){
             case true:
                 winPopUp.DOMove(Vector3.zero, winPopupSpeed).SetEase(Ease.OutBack);
-                audioManager.PlayWinSound();
+                // audioManager.PlayWinSound();
                 break;
             case false:
                 winPopUp.position = ogPos;

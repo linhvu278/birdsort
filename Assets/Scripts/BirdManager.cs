@@ -11,6 +11,7 @@ public class BirdManager : MonoBehaviour
     private MainGameManager gameManager;
     private BirdsToSpawn birdSpawner;
     private UndoList undoList;
+    private SkinChanger skinChanger;
 
     [SerializeField] public GameObject branchPrefab;
     private const int minNumberOfBranches = 4;
@@ -39,6 +40,7 @@ public class BirdManager : MonoBehaviour
         gameManager = MainGameManager.instance;
         birdSpawner = BirdsToSpawn.instance;
         undoList = UndoList.instance;
+        skinChanger = SkinChanger.instance;
 
         foreach (Transform branch in branchGroup){
             branchPositions.Add(branch);
@@ -66,6 +68,7 @@ public class BirdManager : MonoBehaviour
     }
     public void AddBranch(){
         if (branches.Count < maxNumberOfBranches){
+            branchPrefab.GetComponent<SpriteRenderer>().sprite = skinChanger.currentBranchSkin;
             GameObject branchToSpawn = Instantiate(branchPrefab, branchPositions[branches.Count]);
             branches.Add(branchToSpawn);
 
